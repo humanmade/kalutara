@@ -31,4 +31,7 @@ namespace Kalutara;
 
 defined( 'ABSPATH' ) || die();
 
+require_once __DIR__ . '/inc/rewrites.php';
 require_once __DIR__ . '/inc/helpers.php';
+
+Rewrites\setup();
