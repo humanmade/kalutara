@@ -29,11 +29,9 @@ foreach ( $directories as $directory ) {
 		>
 			<h2><?php echo esc_html( $file ); ?></h2>
 			<?php
-			get_extended_template_part(
-				Helpers\remove_extension_from_filename( $file ),
-				null,
-				Data\get_dummy_data( $file )
-			);
+				get_extended_template_part(
+					Helpers\remove_extension_from_filename( $file )
+				);
 			?>
 		</article>
 	<?php endforeach; ?>
