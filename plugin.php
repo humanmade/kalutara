@@ -14,7 +14,7 @@
  * Author URI: https://humanmade.com
  * Text Domain: hm-kalutara
  * Domain Path: /languages
- * Requires PHP: 5.3
+ * Requires PHP: 7.0
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -31,4 +31,7 @@ namespace Kalutara;
 
 defined( 'ABSPATH' ) || die();
 
+require_once __DIR__ . '/inc/rewrites.php';
 require_once __DIR__ . '/inc/helpers.php';
+
+Rewrites\setup();
