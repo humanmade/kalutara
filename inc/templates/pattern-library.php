@@ -15,6 +15,13 @@ $directories = [
 
 \get_header();
 
+$query = new \WP_Query( [
+	'posts_per_page' => 1,
+] );
+
+while ( $query->have_posts() ) :
+	$query->the_post();
+
 foreach ( $directories as $directory ) :
 	foreach ( Helpers\get_files_in_path( $directory ) as $file ) : ?>
 		<article class="kalutara-component <?php echo esc_attr( Helpers\get_css_class_name( $file ) ); ?>">
@@ -30,5 +37,9 @@ foreach ( $directories as $directory ) :
 		<?php
 	endforeach;
 endforeach;
+
+endwhile;
+
+wp_reset_postdata();
 
 \get_footer();
