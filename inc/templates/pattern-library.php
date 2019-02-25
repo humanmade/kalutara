@@ -7,11 +7,6 @@
 
 namespace Kalutara;
 
-$directories = [];
-
-$directories = [
-	'template-parts',
-];
 
 \get_header();
 
@@ -22,8 +17,7 @@ $query = new \WP_Query( [
 while ( $query->have_posts() ) :
 	$query->the_post();
 
-foreach ( $directories as $directory ) :
-	foreach ( Helpers\get_files_in_path( $directory ) as $file ) : ?>
+	foreach ( Helpers\get_files_in_path( 'template-parts' ) as $file ) : ?>
 		<article class="kalutara-component <?php echo esc_attr( Helpers\get_css_class_name( $file ) ); ?>">
 			<h2><?php echo esc_html( $file ); ?></h2>
 			<?php
@@ -39,7 +33,6 @@ foreach ( $directories as $directory ) :
 		</article>
 		<?php
 	endforeach;
-endforeach;
 
 endwhile;
 
