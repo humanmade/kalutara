@@ -20,20 +20,22 @@ use phpDocumentor\Reflection\DocBlock;
 function get_template_part_header( $file ) {
 	$template_part = file_get_contents( $file );
 
-	if ( ! $template_part ) {
+	$has_header = preg_match( '#/\*\*(.|[\n\r])*?\*/#m', $template_part, $matches );
+
+	if ( ! $has_header ) {
 		return;
 	}
 
 	$reflector_factory = DocBlockFactory::createInstance();
-	$parsed = $reflector_factory->create( $template_part );
+	$parsed = $reflector_factory->create( $matches[0] );
 
 	return [
 		'name'           => $parsed->getSummary(),
 		'documentation'  => $parsed->getDescription(),
-		'template_vars'  => $parsed->getTags( 'var', null, true ),
-		'globals'        => $parsed->getTags( 'global', null, true ),
-		'data'           => $parsed->getTags( 'data', null, true ),
-		'data_providers' => $parsed->getTags( 'dataProviders', null, true ),
+		'template_vars'  => $parsed->getTagsByName( 'var', null, true ),
+		'globals'        => $parsed->getTagsByName( 'global', null, true ),
+		'data'           => $parsed->getTagsByName( 'data', null, true ),
+		'data_providers' => $parsed->getTagsByName( 'dataProviders', null, true ),
 	];
 }
 
