@@ -1,0 +1,5 @@
+<?xml version="1.0"?>
+<ruleset>
+	<!-- Use HM Coding Standards -->
+	<rule ref="vendor/humanmade/coding-standards" />
+</ruleset>
