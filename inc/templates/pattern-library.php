@@ -24,7 +24,7 @@ foreach ( $directories as $directory ) :
 			<?php
 			get_extended_template_part(
 				Helpers\remove_extension_from_filename( $file ),
-				null,
+				'',
 				Data\get_dummy_data( $file )
 			);
 			?>
