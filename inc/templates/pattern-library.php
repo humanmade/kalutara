@@ -9,11 +9,9 @@ namespace Kalutara;
 
 $directories = [];
 
-if ( is_child_theme() ) {
-	$directories[] = get_stylesheet_directory() . '/template-parts';
-}
-
-$directories[] = get_template_directory() . '/template-parts';
+$directories = [
+	'template-parts',
+];
 
 \get_header();
 
