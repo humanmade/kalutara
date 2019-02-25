@@ -26,3 +26,9 @@
  * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
  * GNU General Public License for more details.
  */
+
+namespace Kalutara;
+
+defined( 'ABSPATH' ) || die();
+
+require_once __DIR__ . '/inc/helpers.php';
