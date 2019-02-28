@@ -20,8 +20,6 @@ $directories[] = get_template_directory() . '/template-parts';
 foreach ( $directories as $directory ) :
 	foreach ( Helpers\get_files_in_path( $directory ) as $file ) :
 
-		if ( 'post-card.php' !== $file ) continue;
-
 		$file_path = trailingslashit( $directory ) . $file;
 		$file_documentation = Parser\get_template_part_header( $file_path );
 		?>
