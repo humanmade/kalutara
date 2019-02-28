@@ -7,6 +7,11 @@
 
 namespace Kalutara;
 
+// Instruct robots not to index this page or expose referer information:
+add_action( 'wp_head', 'wp_sensitive_page_meta' );
+
+// Instruct clients not to cache this page:
+\nocache_headers();
 
 \get_header();
 
