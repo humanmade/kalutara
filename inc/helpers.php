@@ -15,28 +15,28 @@ namespace Kalutara\Helpers;
  */
 function get_files_in_path( $dir ) {
 	$result = [];
-	$directories = [];
+	$directories = [
+		get_template_directory(),
+	];
 
 	if ( is_child_theme() ) {
 		$directories[] = get_stylesheet_directory();
 	}
 
-	$directories[] = get_template_directory();
-
 	foreach ( $directories as $directory ) {
-		foreach ( scandir( $directory . '/' . $dir ) as $filename ) {
-			if ( basename( $filename )[0] === '.' ) {
+		foreach ( scandir( $directory . '/' . $dir ) as $top_slug => $top_filename ) {
+			if ( basename( $top_filename )[0] === '.' ) {
 				continue;
 			}
 
-			$basename = $dir . '/' . $filename;
+			$basename = $dir . '/' . $top_filename;
 
 			if ( is_dir( $directory . '/' . $basename ) ) {
-				foreach ( get_files_in_path( $basename ) as $child_file_name ) {
-					$result[] = $child_file_name;
+				foreach ( get_files_in_path( $basename ) as $child_slug => $child_filename ) {
+					$result[ $child_slug ] = $child_filename;
 				}
 			} else {
-				$result[] = $basename;
+				$result[ $basename ] = $directory . '/' . $basename;
 			}
 		}
 	}

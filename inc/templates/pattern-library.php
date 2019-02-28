@@ -22,9 +22,9 @@ $query = new \WP_Query( [
 while ( $query->have_posts() ) :
 	$query->the_post();
 
-	foreach ( Helpers\get_files_in_path( 'template-parts' ) as $file ) : ?>
-		<article class="kalutara-component <?php echo esc_attr( Helpers\get_css_class_name( $file ) ); ?>">
-			<strong><?php echo esc_html( $file ); ?></strong>
+	foreach ( Helpers\get_files_in_path( 'template-parts' ) as $slug => $file ) : ?>
+		<article class="kalutara-component <?php echo esc_attr( Helpers\get_css_class_name( $slug ) ); ?>">
+			<strong><?php echo esc_html( $slug ); ?></strong>
 			<?php
 
 			if ( ! empty( $file_documentation['summary'] ) ) :
@@ -47,9 +47,12 @@ while ( $query->have_posts() ) :
 			<div class="kalutara-component__preview">
 				<?php
 				get_extended_template_part(
-					Helpers\remove_extension_from_filename( $file ),
+					Helpers\remove_extension_from_filename( $slug ),
 					'',
-					Data\get_data( $file_path )
+					Data\get_data( $file ),
+					[
+						'dir' => '/'
+					]
 				);
 				?>
 			</div>
