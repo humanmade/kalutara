@@ -44,15 +44,29 @@ foreach ( $directories as $directory ) :
 			endif;
 			?>
 
-			<div class="kalutara-component__preview">
-				<?php
-				get_extended_template_part(
-					Helpers\remove_extension_from_filename( $file ),
-					'',
-					Data\get_data( $file_path )
-				);
-				?>
-			</div>
+			<?php
+				$data_objects = Data\get_data( $file_path );
+
+				foreach ( $data_objects as $data ) :
+
+					// If this data variant has a "title" in its meta, output that.
+					if ( ! empty( $data['_meta']['title'] ) ) {
+						echo '<h6 class="kalutara-component__variant-title">' . esc_html( $data['_meta']['title'] ) . '</h6>';
+
+					}
+					?>
+					<div class="kalutara-component__preview">
+						<?php
+						get_extended_template_part(
+							Helpers\remove_extension_from_filename( $file ),
+							'',
+							$data
+						);
+						?>
+					</div>
+					<?php
+				endforeach;
+			?>
 		</article>
 		<?php
 	endforeach;

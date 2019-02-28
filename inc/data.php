@@ -25,3 +25,15 @@ function get_data( $file ) {
 		$file_documentation['data_providers']
 	);
 }
+
+/**
+ * Get a value from the _meta array in a template data object.
+ *
+ * @param string $value Key of a meta key to retrieve.
+ * @return mixed Value of the meta key specified.
+ */
+function get_meta_value( $file, $value ) {
+	$data = get_data( $file );
+
+	return $data['_meta'][ $value ] ?? null;
+}

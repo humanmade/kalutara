@@ -22,8 +22,12 @@ function get_template_part_header( $file ) {
 
 	$has_header = preg_match( '#/\*\*(.|[\n\r])*?\*/#m', $template_part, $matches );
 
+	// Return bare default values if the file has no header.
 	if ( ! $has_header ) {
-		return;
+		return [
+			'data' => [ [ '_meta' => [] ] ],
+			'data_providers' => [],
+		];
 	}
 
 	$reflector_factory = DocBlockFactory::createInstance();
@@ -53,7 +57,7 @@ function parse_data( $data ) {
 	return array_map(
 		function ( $data_entry ) {
 			$data_value = $data_entry->getDescription()->render();
-			return json_decode( $data_value );
+			return json_decode( $data_value, true );
 		},
 		$data
 	);
