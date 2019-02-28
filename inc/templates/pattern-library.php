@@ -7,24 +7,24 @@
 
 namespace Kalutara;
 
-$directories = [];
+// Instruct robots not to index this page or expose referer information:
+add_action( 'wp_head', 'wp_sensitive_page_meta' );
 
-if ( is_child_theme() ) {
-	$directories[] = get_stylesheet_directory() . '/template-parts';
-}
-
-$directories[] = get_template_directory() . '/template-parts';
+// Instruct clients not to cache this page:
+\nocache_headers();
 
 \get_header();
 
-foreach ( $directories as $directory ) :
-	foreach ( Helpers\get_files_in_path( $directory ) as $file ) :
+$query = new \WP_Query( [
+	'posts_per_page' => 1,
+] );
 
-		$file_path = trailingslashit( $directory ) . $file;
-		$file_documentation = Parser\get_template_part_header( $file_path );
-		?>
-		<article class="kalutara-component <?php echo esc_attr( Helpers\get_css_class_name( $file ) ); ?>">
-			<strong><?php echo esc_html( $file ); ?></strong>
+while ( $query->have_posts() ) :
+	$query->the_post();
+
+	foreach ( Helpers\get_files_in_path( 'template-parts' ) as $slug => $file ) : ?>
+		<article class="kalutara-component <?php echo esc_attr( Helpers\get_css_class_name( $slug ) ); ?>">
+			<strong><?php echo esc_html( $slug ); ?></strong>
 			<?php
 
 			if ( ! empty( $file_documentation['summary'] ) ) :
@@ -47,15 +47,21 @@ foreach ( $directories as $directory ) :
 			<div class="kalutara-component__preview">
 				<?php
 				get_extended_template_part(
-					Helpers\remove_extension_from_filename( $file ),
+					Helpers\remove_extension_from_filename( $slug ),
 					'',
-					Data\get_data( $file_path )
+					Data\get_data( $file ),
+					[
+						'dir' => '/'
+					]
 				);
 				?>
 			</div>
 		</article>
 		<?php
 	endforeach;
-endforeach;
+
+endwhile;
+
+wp_reset_postdata();
 
 \get_footer();
