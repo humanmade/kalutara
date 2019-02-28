@@ -10,7 +10,7 @@ const QUERY_VAR = 'kalutara';
  *
  * @return void
  */
-function setup() : void {
+function setup()  {
 	add_action( 'init', __NAMESPACE__ . '\\setup_rewrite_rules' );
 	add_filter( 'query_vars', __NAMESPACE__ . '\\setup_query_vars' );
 	add_action( 'template_redirect', __NAMESPACE__ . '\\template_redirect' );
@@ -21,7 +21,7 @@ function setup() : void {
  *
  * @return void
  */
-function setup_rewrite_rules() : void {
+function setup_rewrite_rules()  {
 	add_rewrite_rule( '^' . SLUG . '\/?$', 'index.php?' . QUERY_VAR . '=all', 'top' );
 	add_rewrite_rule( '^' . SLUG . '\/(.+)?$', 'index.php?' . QUERY_VAR . '=$matches[1]', 'top' );
 }
@@ -39,7 +39,7 @@ function setup_query_vars( array $query_vars ) : array {
 /**
  * Render the Pattern Library
  */
-function template_redirect() : void {
+function template_redirect()  {
 	global $wp_query;
 
 	if ( empty( $wp_query->get( QUERY_VAR ) ) ) {
