@@ -9,7 +9,11 @@
             "email": "hello@humanmade.com"
         }
     ],
-    "require": {},
+    "require": {
+        "phpdocumentor/reflection-docblock": "^4.3",
+        "johnbillion/extended-template-parts": "^2",
+        "php": ">=7"
+    },
     "require-dev": {
         "humanmade/coding-standards": "^0.5.0"
     }

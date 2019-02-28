@@ -9,15 +9,19 @@
 
 namespace Kalutara\Data;
 
+use Kalutara\Parser;
+
 /**
- * Get dummy data.
+ * Get data.
  *
  * @param  string $file File name to fetch dummy data for.
  * @return array Dummy data to pass to the variants.
  */
-function get_dummy_data( $file ) {
-	return [
-		'foo' => __( 'Foo', 'hm-kalutara' ),
-		'bar' => __( 'Bar', 'hm-kalutara' ),
-	];
+function get_data( $file ) {
+	$file_documentation = Parser\get_template_part_header( $file );
+
+	return array_merge(
+		$file_documentation['data'],
+		$file_documentation['data_providers']
+	);
 }
