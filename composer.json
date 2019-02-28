@@ -10,6 +10,7 @@
         }
     ],
     "require": {
+        "phpdocumentor/reflection-docblock": "^4.3",
         "johnbillion/extended-template-parts": "^2",
         "php": ">=7"
     },
