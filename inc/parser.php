@@ -25,8 +25,7 @@ function get_template_part_header( $file ) {
 	// Return bare default values if the file has no header.
 	if ( ! $has_header ) {
 		return [
-			'data' => [ [ '_meta' => [] ] ],
-			'data_providers' => [],
+			'data' => [],
 		];
 	}
 
@@ -38,11 +37,13 @@ function get_template_part_header( $file ) {
 		'documentation'  => $parsed->getDescription()->render(),
 		'template_vars'  => $parsed->getTagsByName( 'var', null, true ),
 		'globals'        => $parsed->getTagsByName( 'global', null, true ),
-		'data'           => parse_data(
-			$parsed->getTagsByName( 'data', null, true )
-		),
-		'data_providers' => parse_data_providers(
-			$parsed->getTagsByName( 'dataProviders', null, true )
+		'data'           => array_merge(
+			parse_data(
+				$parsed->getTagsByName( 'data', null, true )
+			),
+			parse_data_providers(
+				$parsed->getTagsByName( 'dataProviders', null, true )
+			)
 		),
 	];
 }
@@ -73,7 +74,7 @@ function parse_data( $data ) {
  * @return [] Array of decoded data values.
  */
 function parse_data_providers( $data_providers ) {
-	$data_provider_values = array_map(
+	return array_filter( array_map(
 		function ( $data_provider_entry ) {
 			$data_provider_func = $data_provider_entry->getDescription()->render();
 
@@ -81,8 +82,6 @@ function parse_data_providers( $data_providers ) {
 				call_user_func( $data_provider_func ) :
 				[];
 		},
-		$data_provider
-	);
-
-	return array_filter( $data_providers );
+		$data_providers
+	) );
 }

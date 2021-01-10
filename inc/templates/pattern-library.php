@@ -23,7 +23,7 @@ foreach ( $directories as $directory ) :
 		$file_path = trailingslashit( $directory ) . $file;
 		$file_documentation = Parser\get_template_part_header( $file_path );
 		?>
-		<article class="kalutara-component <?php echo esc_attr( Helpers\get_css_class_name( $file ) ); ?>">
+		<article class="kalutara-component kalutara-component--<?php echo esc_attr( Helpers\get_css_class_name( $file ) ); ?>">
 			<strong><?php echo esc_html( $file ); ?></strong>
 			<?php
 
@@ -45,13 +45,11 @@ foreach ( $directories as $directory ) :
 			?>
 
 			<?php
-				$data_objects = Data\get_data( $file_path );
-
-				foreach ( $data_objects as $data ) :
+				foreach ( $file_documentation['data'] as $data ) :
 
 					// If this data variant has a "title" in its meta, output that.
 					if ( ! empty( $data['_meta']['title'] ) ) {
-						echo '<h6 class="kalutara-component__variant-title">' . esc_html( $data['_meta']['title'] ) . '</h6>';
+						echo '<h4 class="kalutara-component__variant-title">' . esc_html( $data['_meta']['title'] ) . '</h4>';
 
 					}
 					?>
