@@ -5,8 +5,6 @@
  * @package Kalutara
  */
 
-namespace Kalutara;
-
 $directories = [];
 
 if ( is_child_theme() ) {
@@ -18,12 +16,12 @@ $directories[] = get_template_directory() . '/template-parts';
 \get_header();
 
 foreach ( $directories as $directory ) :
-	foreach ( Helpers\get_files_in_path( $directory ) as $file ) :
+	foreach ( Kalutara\Helpers\get_files_in_path( $directory ) as $file ) :
 
 		$file_path = trailingslashit( $directory ) . $file;
-		$file_documentation = Parser\get_template_part_header( $file_path );
+		$file_documentation = Kalutara\Parser\get_template_part_header( $file_path );
 		?>
-		<article class="kalutara-component <?php echo esc_attr( Helpers\get_css_class_name( $file ) ); ?>">
+		<article class="kalutara-component kalutara-component--<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $file ) ); ?>">
 			<strong><?php echo esc_html( $file ); ?></strong>
 			<?php
 
@@ -44,15 +42,30 @@ foreach ( $directories as $directory ) :
 			endif;
 			?>
 
-			<div class="kalutara-component__preview">
-				<?php
-				get_extended_template_part(
-					Helpers\remove_extension_from_filename( $file ),
-					'',
-					Data\get_data( $file_path )
-				);
+			<?php
+			// Use file doc data for variations, otherwise use a single empty variation.
+			$variations = ! empty( $file_documentation['data'] ) ? $file_documentation['data'] : [ [] ];
+
+			foreach ( $variations as $data ) :
+
+				// If this data variant has a "title" in its meta, output that.
+				if ( ! empty( $data['_meta']['title'] ) ) {
+					echo '<h4 class="kalutara-component__variant-title">' . esc_html( $data['_meta']['title'] ) . '</h4>';
+
+				}
 				?>
-			</div>
+				<div class="kalutara-component__preview">
+					<?php
+					get_extended_template_part(
+						Kalutara\Helpers\remove_extension_from_filename( $file ),
+						'',
+						$data
+					);
+					?>
+				</div>
+				<?php
+			endforeach;
+			?>
 		</article>
 		<?php
 	endforeach;

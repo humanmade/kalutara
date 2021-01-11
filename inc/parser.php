@@ -9,12 +9,11 @@
 namespace Kalutara\Parser;
 
 use phpDocumentor\Reflection\DocBlockFactory;
-use phpDocumentor\Reflection\DocBlock;
 
 /**
  * Parse a file header and return the parsed docblock.
  *
- * @param string $file_path Path of file to parse
+ * @param string $file Path of file to parse
  * @return [] Parsed DocBlock object if valid
  */
 function get_template_part_header( $file ) {
@@ -22,8 +21,11 @@ function get_template_part_header( $file ) {
 
 	$has_header = preg_match( '#/\*\*(.|[\n\r])*?\*/#m', $template_part, $matches );
 
+	// Return bare default values if the file has no header.
 	if ( ! $has_header ) {
-		return;
+		return [
+			'data' => [],
+		];
 	}
 
 	$reflector_factory = DocBlockFactory::createInstance();
@@ -34,11 +36,13 @@ function get_template_part_header( $file ) {
 		'documentation'  => $parsed->getDescription()->render(),
 		'template_vars'  => $parsed->getTagsByName( 'var', null, true ),
 		'globals'        => $parsed->getTagsByName( 'global', null, true ),
-		'data'           => parse_data(
-			$parsed->getTagsByName( 'data', null, true )
-		),
-		'data_providers' => parse_data_providers(
-			$parsed->getTagsByName( 'dataProviders', null, true )
+		'data'           => array_merge(
+			parse_data(
+				$parsed->getTagsByName( 'data', null, true )
+			),
+			parse_data_providers(
+				$parsed->getTagsByName( 'dataProviders', null, true )
+			)
 		),
 	];
 }
@@ -53,7 +57,7 @@ function parse_data( $data ) {
 	return array_map(
 		function ( $data_entry ) {
 			$data_value = $data_entry->getDescription()->render();
-			return json_decode( $data_value );
+			return json_decode( $data_value, true );
 		},
 		$data
 	);
@@ -69,7 +73,7 @@ function parse_data( $data ) {
  * @return [] Array of decoded data values.
  */
 function parse_data_providers( $data_providers ) {
-	$data_provider_values = array_map(
+	return array_filter( array_map(
 		function ( $data_provider_entry ) {
 			$data_provider_func = $data_provider_entry->getDescription()->render();
 
@@ -77,8 +81,6 @@ function parse_data_providers( $data_providers ) {
 				call_user_func( $data_provider_func ) :
 				[];
 		},
-		$data_provider
-	);
-
-	return array_filter( $data_providers );
+		$data_providers
+	) );
 }
