@@ -21,7 +21,7 @@ foreach ( $directories as $directory ) :
 		$file_path = trailingslashit( $directory ) . $file;
 		$file_documentation = Kalutara\Parser\get_template_part_header( $file_path );
 		?>
-		<article class="kalutara-component kalutara-component--<?php echo esc_attr( Kalutara\Helpers\get_css_class_name( $file ) ); ?>">
+		<article class="kalutara-component kalutara-component--<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $file ) ); ?>">
 			<strong><?php echo esc_html( $file ); ?></strong>
 			<?php
 
