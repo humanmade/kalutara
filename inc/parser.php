@@ -9,12 +9,11 @@
 namespace Kalutara\Parser;
 
 use phpDocumentor\Reflection\DocBlockFactory;
-use phpDocumentor\Reflection\DocBlock;
 
 /**
  * Parse a file header and return the parsed docblock.
  *
- * @param string $file_path Path of file to parse
+ * @param string $file Path of file to parse
  * @return [] Parsed DocBlock object if valid
  */
 function get_template_part_header( $file ) {

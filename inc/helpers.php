@@ -37,8 +37,8 @@ function get_files_in_path( $dir ) {
 /**
  * Remove the '.php' from a filename string
  *
- * @param $file      string Filename, it can include the folder name.
- * @param $extension string Extension (with the dot) to be replaced.
+ * @param string $file      Filename, it can include the folder name.
+ * @param string $extension Extension (with the dot) to be replaced.
  * @return string Filename without the extension.
  */
 function remove_extension_from_filename( $file, $extension = '.php' ) {
@@ -49,9 +49,9 @@ function remove_extension_from_filename( $file, $extension = '.php' ) {
  * Create a string with the specific folder and filename
  * to apply grid sizes in CSS.
  *
- * eg: atoms-buttons, molecules-form, organisms-card
+ * For example: atoms-buttons, molecules-form, organisms-card
  *
- * @param $file string filename of the component.
+ * @param string $file filename of the component.
  * @return string CSS valid string.
  */
 function get_css_class_name( $file ) {
