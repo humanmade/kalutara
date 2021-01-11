@@ -56,8 +56,10 @@ foreach ( $directories as $directory ) :
 				<div class="kalutara-component__preview">
 					<?php
 					$template = Kalutara\Helpers\remove_extension_from_filename( $file );
+					$is_extended_template_part = apply_filters( 'kalutara_use_extended_template_parts', false, $file );
 
-					if ( isset( $file_documentation['is_extended_template'] ) && $file_documentation['is_extended_template'] ) {
+					if ( $is_extended_template_part ) {
+						// Handle extended template parts plugin not enabled.
 						if ( ! function_exists( 'get_extended_template_part' ) ) {
 							wp_die( 'get_extended_template_part plugin not found.' );
 						}
