@@ -47,7 +47,6 @@ foreach ( $directories as $directory ) :
 			$variations = ! empty( $file_documentation['data'] ) ? $file_documentation['data'] : [ [] ];
 
 			foreach ( $variations as $data ) :
-
 				// If this data variant has a "title" in its meta, output that.
 				if ( ! empty( $data['_meta']['title'] ) ) {
 					echo '<h4 class="kalutara-component__variant-title">' . esc_html( $data['_meta']['title'] ) . '</h4>';
@@ -56,11 +55,17 @@ foreach ( $directories as $directory ) :
 				?>
 				<div class="kalutara-component__preview">
 					<?php
-					get_extended_template_part(
-						Kalutara\Helpers\remove_extension_from_filename( $file ),
-						'',
-						$data
-					);
+					$template = Kalutara\Helpers\remove_extension_from_filename( $file );
+
+					if ( isset( $file_documentation['is_extended_template'] ) && $file_documentation['is_extended_template'] ) {
+						if ( ! function_exists( 'get_extended_template_part' ) ) {
+							wp_die( 'get_extended_template_part plugin not found.' );
+						}
+
+						get_extended_template_part( $template, '', $data );
+					} else {
+						get_template_part( 'template-parts/' . $template, '', $data );
+					}
 					?>
 				</div>
 				<?php
