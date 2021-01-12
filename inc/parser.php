@@ -32,11 +32,11 @@ function get_template_part_header( $file ) {
 	$parsed = $reflector_factory->create( $matches[0] );
 
 	return [
-		'summary'        => $parsed->getSummary(),
-		'documentation'  => $parsed->getDescription()->render(),
-		'template_vars'  => $parsed->getTagsByName( 'var', null, true ),
-		'globals'        => $parsed->getTagsByName( 'global', null, true ),
-		'data'           => array_merge(
+		'summary'       => $parsed->getSummary(),
+		'documentation' => $parsed->getDescription()->render(),
+		'template_vars' => $parsed->getTagsByName( 'var', null, true ),
+		'globals'       => $parsed->getTagsByName( 'global', null, true ),
+		'data' => array_merge(
 			parse_data(
 				$parsed->getTagsByName( 'data', null, true )
 			),
