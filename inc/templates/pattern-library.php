@@ -40,7 +40,7 @@ $directories[] = get_template_directory() . '/template-parts';
 		padding: 0 !important;
 		font-size: 14px !important;
 		line-height: 1.4 !important;
-		font-family: "Menlo", monospace !important;
+		font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace !important;
 		color: #333 !important;
 	}
 	.kalutara-component__summary {
@@ -53,7 +53,6 @@ $directories[] = get_template_directory() . '/template-parts';
 	.kalutara-component__documentation {
 		clear: both !important;
 	}
-
 	.kalutara-component__variant-title {
 		margin: 15px 0 !important;
 	}
@@ -92,7 +91,7 @@ foreach ( $directories as $directory ) :
 			</div>
 
 			<?php
-			// Use file doc data for variations, otherwise use a single empty variation.
+
 			$variations = ! empty( $file_documentation['data'] ) ? $file_documentation['data'] : [ [] ];
 
 			foreach ( $variations as $data ) :
