@@ -15,6 +15,50 @@ $directories[] = get_template_directory() . '/template-parts';
 
 \get_header();
 
+?>
+
+<style>
+	.kalutara-component {
+		border-bottom: 2px solid #333 !important;
+		padding: 0 10px 10px !important;
+		background: white !important;
+	}
+	.kalutara-component:last-child {
+		border-bottom: none !important;
+	}
+	.kalutara-component__header {
+		background: #EEE !important;
+		padding: 5px 10px !important;
+		margin: 0 -10px 10px !important;
+		overflow: hidden !important;
+	}
+	.kalutara-component__summary,
+	.kalutara-component__template,
+	.kalutara-component__documentation,
+	.kalutara-component__variant-title {
+		margin: 5px 0 !important;
+		padding: 0 !important;
+		font-size: 14px !important;
+		line-height: 1.4 !important;
+		font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace !important;
+		color: #333 !important;
+	}
+	.kalutara-component__summary {
+		font-weight: bold !important;
+		float: left !important;
+	}
+	.kalutara-component__template {
+		float: right !important;
+	}
+	.kalutara-component__documentation {
+		clear: both !important;
+	}
+	.kalutara-component__variant-title {
+		margin: 15px 0 !important;
+	}
+</style>
+
+<?php
 foreach ( $directories as $directory ) :
 	foreach ( Kalutara\Helpers\get_files_in_path( $directory ) as $file ) :
 
@@ -22,35 +66,38 @@ foreach ( $directories as $directory ) :
 		$file_documentation = Kalutara\Parser\get_template_part_header( $file_path );
 		?>
 		<article class="kalutara-component kalutara-component--<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $file ) ); ?>">
-			<strong><?php echo esc_html( $file ); ?></strong>
+			<div class="kalutara-component__header">
+				<?php
+				if ( ! empty( $file_documentation['summary'] ) ) :
+					?>
+					<h3 class="kalutara-component__summary">
+						<?php echo esc_html( $file_documentation['summary'] ); ?>
+					</h3>
+					<?php
+				endif;
+				?>
+
+				<p class="kalutara-component__template">Template: <?php echo esc_html( str_replace( '.php', '', $file ) ); ?></p>
+
+				<?php
+				if ( ! empty( $file_documentation['documentation'] ) ) :
+					?>
+					<p class="kalutara-component__documentation">
+						<?php echo esc_html( $file_documentation['documentation'] ); ?>
+					</p>
+					<?php
+				endif;
+				?>
+			</div>
+
 			<?php
 
-			if ( ! empty( $file_documentation['summary'] ) ) :
-				?>
-				<h3 class="kalutara-component__summary">
-					<?php echo esc_html( $file_documentation['summary'] ); ?>
-				</h3>
-				<?php
-			endif;
-
-			if ( ! empty( $file_documentation['documentation'] ) ) :
-				?>
-				<p class="kalutara-component__documentation">
-					<?php echo esc_html( $file_documentation['documentation'] ); ?>
-				</p>
-				<?php
-			endif;
-			?>
-
-			<?php
-			// Use file doc data for variations, otherwise use a single empty variation.
 			$variations = ! empty( $file_documentation['data'] ) ? $file_documentation['data'] : [ [] ];
 
 			foreach ( $variations as $data ) :
 				// If this data variant has a "title" in its meta, output that.
 				if ( ! empty( $data['_meta']['title'] ) ) {
 					echo '<h4 class="kalutara-component__variant-title">' . esc_html( $data['_meta']['title'] ) . '</h4>';
-
 				}
 				?>
 				<div class="kalutara-component__preview">
