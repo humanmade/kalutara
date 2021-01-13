@@ -50,6 +50,18 @@ $directories[] = get_template_directory() . '/template-parts';
 	.kalutara-component__template {
 		float: right !important;
 	}
+	.kalutara-component__template a,
+	.kalutara-component__template a:link {
+		color: #333 !important;
+		text-decoration: underline !important;
+		border: none !important;
+	}
+	.kalutara-component__template a:hover,
+	.kalutara-component__template a:focus {
+		color: #e06c75 !important;
+		text-decoration: underline !important;
+		border: none !important;
+	}
 	.kalutara-component__documentation {
 		clear: both !important;
 	}
@@ -65,7 +77,10 @@ foreach ( $directories as $directory ) :
 		$file_path = trailingslashit( $directory ) . $file;
 		$file_documentation = Kalutara\Parser\get_template_part_header( $file_path );
 		?>
-		<article class="kalutara-component kalutara-component--<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $file ) ); ?>">
+		<article
+			id="kalutara-<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $file ) ); ?>"
+			class="kalutara-component kalutara-component--<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $file ) ); ?>"
+		>
 			<div class="kalutara-component__header">
 				<?php
 				if ( ! empty( $file_documentation['summary'] ) ) :
@@ -77,7 +92,11 @@ foreach ( $directories as $directory ) :
 				endif;
 				?>
 
-				<p class="kalutara-component__template">Template: <?php echo esc_html( str_replace( '.php', '', $file ) ); ?></p>
+				<p class="kalutara-component__template">
+					<a href="#kalutara-<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $file ) ); ?>">
+						Template: <?php echo esc_html( str_replace( '.php', '', $file ) ); ?>
+					</a>
+				</p>
 
 				<?php
 				if ( ! empty( $file_documentation['documentation'] ) ) :
