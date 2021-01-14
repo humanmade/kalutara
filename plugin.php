@@ -31,9 +31,10 @@ namespace Kalutara;
 
 defined( 'ABSPATH' ) || die();
 
-require_once __DIR__ . '/vendor/autoload.php';
+if ( file_exists( __DIR__ . '/vendor/autoload.php' ) ) {
+	require_once __DIR__ . '/vendor/autoload.php';
+}
 
-require_once __DIR__ . '/inc/data.php';
 require_once __DIR__ . '/inc/rewrites.php';
 require_once __DIR__ . '/inc/helpers.php';
 require_once __DIR__ . '/inc/parser.php';
