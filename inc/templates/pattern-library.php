@@ -52,8 +52,6 @@ $directories[] = get_template_directory() . '/template-parts';
 		.kalutara-component__summary {
 			font-weight: bold !important;
 		}
-		.kalutara-component__template {
-		}
 		.kalutara-component__template a,
 		.kalutara-component__template a:link {
 			color: #333 !important;
