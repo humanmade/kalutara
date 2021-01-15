@@ -81,7 +81,7 @@ $directories[] = get_template_directory() . '/template-parts';
 	</style>
 
 </head>
-<body>
+<body <?php body_class(); ?>>
 
 <?php
 foreach ( $directories as $directory ) :
