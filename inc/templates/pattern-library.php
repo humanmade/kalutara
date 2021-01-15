@@ -13,62 +13,77 @@ if ( is_child_theme() ) {
 
 $directories[] = get_template_directory() . '/template-parts';
 
-\get_header();
-
 ?>
 
-<style>
-	.kalutara-component {
-		border-bottom: 2px solid #333 !important;
-		padding: 0 10px 10px !important;
-		background: white !important;
-	}
-	.kalutara-component:last-child {
-		border-bottom: none !important;
-	}
-	.kalutara-component__header {
-		background: #EEE !important;
-		padding: 5px 10px !important;
-		margin: 0 -10px 10px !important;
-		overflow: hidden !important;
-	}
-	.kalutara-component__summary,
-	.kalutara-component__template,
-	.kalutara-component__documentation,
-	.kalutara-component__variant-title {
-		margin: 5px 0 !important;
-		padding: 0 !important;
-		font-size: 14px !important;
-		line-height: 1.4 !important;
-		font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace !important;
-		color: #333 !important;
-	}
-	.kalutara-component__summary {
-		font-weight: bold !important;
-		float: left !important;
-	}
-	.kalutara-component__template {
-		float: right !important;
-	}
-	.kalutara-component__template a,
-	.kalutara-component__template a:link {
-		color: #333 !important;
-		text-decoration: underline !important;
-		border: none !important;
-	}
-	.kalutara-component__template a:hover,
-	.kalutara-component__template a:focus {
-		color: #e06c75 !important;
-		text-decoration: underline !important;
-		border: none !important;
-	}
-	.kalutara-component__documentation {
-		clear: both !important;
-	}
-	.kalutara-component__variant-title {
-		margin: 15px 0 !important;
-	}
-</style>
+<!doctype html>
+<html class="no-js" <?php language_attributes(); ?>>
+
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<?php wp_head(); ?>
+
+	<style>
+		.kalutara-component {
+			border-bottom: 2px solid #333 !important;
+			padding: 0 10px 10px !important;
+			background: white !important;
+		}
+		.kalutara-component:last-child {
+			border-bottom: none !important;
+		}
+		.kalutara-component__header {
+			background: #EEE !important;
+			padding: 5px 10px !important;
+			margin: 0 -10px 10px !important;
+			overflow: hidden !important;
+		}
+		.kalutara-component__summary,
+		.kalutara-component__template,
+		.kalutara-component__documentation,
+		.kalutara-component__variant-title {
+			margin: 5px 0 !important;
+			padding: 0 !important;
+			font-size: 14px !important;
+			line-height: 1.4 !important;
+			font-family: SFMono-Regular, Consolas, Liberation Mono, Menlo, monospace !important;
+			color: #333 !important;
+		}
+		.kalutara-component__summary {
+			font-weight: bold !important;
+		}
+		.kalutara-component__template {
+		}
+		.kalutara-component__template a,
+		.kalutara-component__template a:link {
+			color: #333 !important;
+			text-decoration: underline !important;
+			border: none !important;
+		}
+		.kalutara-component__template a:hover,
+		.kalutara-component__template a:focus {
+			color: #e06c75 !important;
+			text-decoration: underline !important;
+			border: none !important;
+		}
+		.kalutara-component__documentation {
+			clear: both !important;
+		}
+		.kalutara-component__variant-title {
+			margin: 15px 0 !important;
+		}
+		@media screen and ( min-width: 750px ) {
+			.kalutara-component__summary {
+				float: left !important;
+			}
+			.kalutara-component__template {
+				float: right !important;
+			}
+		}
+	</style>
+
+</head>
+<body>
 
 <?php
 foreach ( $directories as $directory ) :
@@ -144,4 +159,6 @@ foreach ( $directories as $directory ) :
 	endforeach;
 endforeach;
 
-\get_footer();
+wp_footer();
+
+?>
