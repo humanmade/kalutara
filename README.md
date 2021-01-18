@@ -50,7 +50,7 @@ $args = wp_parse_args( $args, [
 Example usage of template.
 
 ```php
-get_template_part( 'template-parts/box', '', [ 'title' => 'Test Title' ] )
+get_template_part( 'template-parts/box', '', [ 'title' => 'Test Title' ] );
 ```
 
 ### Test Data
