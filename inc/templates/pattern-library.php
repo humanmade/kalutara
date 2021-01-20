@@ -12,7 +12,7 @@ $query_var = get_query_var( \Kalutara\Rewrites\QUERY_VAR );
 // Build list of template files to display.
 // Either a single template or find all.
 if ( $query_var !== 'all' ) {
-	$templates = [ $query_var ];
+	$templates = [ sanitize_text_field( $query_var ) ];
 } else {
 	$template_files = [];
 	$directories[] = get_template_directory() . '/template-parts';
@@ -104,6 +104,11 @@ if ( $query_var !== 'all' ) {
 foreach ( $templates as $template ) :
 	$file_path = locate_template( 'template-parts/' . $template . '.php' );
 	$file_documentation = Kalutara\Parser\get_template_part_header( $file_path );
+
+	if ( empty( $file_path ) ) {
+		continue;
+	}
+
 	?>
 	<article
 		id="kalutara-<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $template ) ); ?>"
