@@ -95,6 +95,9 @@ To display multiple variations of a single template, with different test data fo
 
 You can also use PHP to pass the data to the template. Use the `@dataProvider` tag to specify a function that will return the data. This also supports multiple variations by using multiple `@dataProvider` tags. Note that you can use both `@data` and `@dataProvider` tags within a single template.
 
+This is really useful if you want to retrieve a post from the database and pass it to your template.
+
+
 ```php
 <?php
 /**
@@ -106,7 +109,7 @@ You can also use PHP to pass the data to the template. Use the `@dataProvider` t
  */
 ?>
 <div class="box">
-	<h1><?php echo esc_html( $args['title'] ); ?></h1>
+	<h1><?php echo esc_html( $args['post']->post_title ); ?></h1>
 </div>
 ```
 
@@ -117,7 +120,11 @@ namespace HM\MyTheme\PatternLibraryData;
 
 function box {
 	return [
-		'title' => 'Test Title',
+		'post' => get_post( 1 ),
 	];
 }
 ```
+
+## Limitations
+
+One limitation of the pattern library is that it relies on data being passed to the template, and cannot use global data e.g. `the_title`. However this is very common practice in WordPress development, and I'd probably advise against changing the way you do things completely to comply with the pattern library too much. Often it's best to just use the pattern library for smaller components.
