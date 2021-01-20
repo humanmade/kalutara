@@ -7,11 +7,28 @@
 
 $directories = [];
 
-if ( is_child_theme() ) {
-	$directories[] = get_stylesheet_directory() . '/template-parts';
-}
+$query_var = get_query_var( \Kalutara\Rewrites\QUERY_VAR );
 
-$directories[] = get_template_directory() . '/template-parts';
+// Build list of template files to display.
+// Either a single template or find all.
+if ( $query_var !== 'all' ) {
+	$templates = [ $query_var ];
+} else {
+	$template_files = [];
+	$directories[] = get_template_directory() . '/template-parts';
+
+	if ( is_child_theme() ) {
+		$directories[] = get_stylesheet_directory() . '/template-parts';
+	}
+
+	foreach ( $directories as $directory ) {
+		// Convert files in path to template paths.
+		$templates = array_unique( array_map(
+			'\Kalutara\Helpers\remove_extension_from_filename',
+			Kalutara\Helpers\get_files_in_path( $directory )
+		) );
+	}
+}
 
 ?>
 
@@ -84,77 +101,73 @@ $directories[] = get_template_directory() . '/template-parts';
 <body <?php body_class(); ?>>
 
 <?php
-foreach ( $directories as $directory ) :
-	foreach ( Kalutara\Helpers\get_files_in_path( $directory ) as $file ) :
-
-		$file_path = trailingslashit( $directory ) . $file;
-		$file_documentation = Kalutara\Parser\get_template_part_header( $file_path );
-		?>
-		<article
-			id="kalutara-<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $file ) ); ?>"
-			class="kalutara-component kalutara-component--<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $file ) ); ?>"
-		>
-			<div class="kalutara-component__header">
-				<?php
-				if ( ! empty( $file_documentation['summary'] ) ) :
-					?>
-					<h3 class="kalutara-component__summary">
-						<?php echo esc_html( $file_documentation['summary'] ); ?>
-					</h3>
-					<?php
-				endif;
+foreach ( $templates as $template ) :
+	$file_path = locate_template( 'template-parts/' . $template . '.php' );
+	$file_documentation = Kalutara\Parser\get_template_part_header( $file_path );
+	?>
+	<article
+		id="kalutara-<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $template ) ); ?>"
+		class="kalutara-component kalutara-component--<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $template ) ); ?>"
+	>
+		<div class="kalutara-component__header">
+			<?php
+			if ( ! empty( $file_documentation['summary'] ) ) :
 				?>
-
-				<p class="kalutara-component__template">
-					<a href="#kalutara-<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $file ) ); ?>">
-						Template: <?php echo esc_html( str_replace( '.php', '', $file ) ); ?>
-					</a>
-				</p>
-
+				<h3 class="kalutara-component__summary">
+					<?php echo esc_html( $file_documentation['summary'] ); ?>
+				</h3>
 				<?php
-				if ( ! empty( $file_documentation['documentation'] ) ) :
-					?>
-					<p class="kalutara-component__documentation">
-						<?php echo esc_html( $file_documentation['documentation'] ); ?>
-					</p>
-					<?php
-				endif;
-				?>
-			</div>
+			endif;
+			?>
+
+			<p class="kalutara-component__template">
+				<a href="#kalutara-<?php echo sanitize_html_class( Kalutara\Helpers\get_css_class_name( $template ) ); ?>">
+					Template: <?php echo esc_html( $template ); ?>
+				</a>
+			</p>
 
 			<?php
+			if ( ! empty( $file_documentation['documentation'] ) ) :
+				?>
+				<p class="kalutara-component__documentation">
+					<?php echo esc_html( $file_documentation['documentation'] ); ?>
+				</p>
+				<?php
+			endif;
+			?>
+		</div>
 
-			$variations = ! empty( $file_documentation['data'] ) ? $file_documentation['data'] : [ [] ];
+		<?php
 
-			foreach ( $variations as $data ) :
-				// If this data variant has a "title" in its meta, output that.
-				if ( ! empty( $data['_meta']['title'] ) ) {
-					echo '<h4 class="kalutara-component__variant-title">' . esc_html( $data['_meta']['title'] ) . '</h4>';
+		$variations = ! empty( $file_documentation['data'] ) ? $file_documentation['data'] : [ [] ];
+
+		foreach ( $variations as $data ) :
+			// If this data variant has a "title" in its meta, output that.
+			if ( ! empty( $data['_meta']['title'] ) ) {
+				echo '<h4 class="kalutara-component__variant-title">' . esc_html( $data['_meta']['title'] ) . '</h4>';
+			}
+			?>
+			<div class="kalutara-component__preview">
+				<?php
+				$is_extended_template_part = apply_filters( 'kalutara_use_extended_template_parts', false, $template );
+
+				if ( $is_extended_template_part ) {
+					// Handle extended template parts plugin not enabled.
+					if ( ! function_exists( 'get_extended_template_part' ) ) {
+						wp_die( 'get_extended_template_part plugin not found.' );
+					}
+
+					get_extended_template_part( $template, '', $data );
+				} else {
+					get_template_part( 'template-parts/' . $template, '', $data );
 				}
 				?>
-				<div class="kalutara-component__preview">
-					<?php
-					$template = Kalutara\Helpers\remove_extension_from_filename( $file );
-					$is_extended_template_part = apply_filters( 'kalutara_use_extended_template_parts', false, $file );
-
-					if ( $is_extended_template_part ) {
-						// Handle extended template parts plugin not enabled.
-						if ( ! function_exists( 'get_extended_template_part' ) ) {
-							wp_die( 'get_extended_template_part plugin not found.' );
-						}
-
-						get_extended_template_part( $template, '', $data );
-					} else {
-						get_template_part( 'template-parts/' . $template, '', $data );
-					}
-					?>
-				</div>
-				<?php
-			endforeach;
-			?>
-		</article>
-		<?php
-	endforeach;
+			</div>
+			<?php
+		endforeach;
+		?>
+	</article>
+	<?php
 endforeach;
 
 wp_footer();
