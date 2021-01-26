@@ -14,7 +14,7 @@ $query_var = get_query_var( \Kalutara\Rewrites\QUERY_VAR );
 if ( $query_var !== 'all' ) {
 	$templates = [ sanitize_text_field( $query_var ) ];
 } else {
-	$template_files = [];
+	$templates = [];
 	$directories[] = get_template_directory() . '/template-parts';
 
 	if ( is_child_theme() ) {
@@ -23,11 +23,13 @@ if ( $query_var !== 'all' ) {
 
 	foreach ( $directories as $directory ) {
 		// Convert files in path to template paths.
-		$templates = array_unique( array_map(
+		$templates = array_merge( $templates, array_map(
 			'\Kalutara\Helpers\remove_extension_from_filename',
 			Kalutara\Helpers\get_files_in_path( $directory )
 		) );
 	}
+
+	$templates = array_unique( $templates );
 }
 
 ?>
