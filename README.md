@@ -127,7 +127,7 @@ function box {
 
 ## Using extended template parts. 
 
-By default, the plugin loads each template using the core `get_template_part` function, which supports passing data to the template. However if you want to use this plugin with the [Extended Template Parts libaray](https://github.com/johnbillion/extended-template-parts) by John Blackbourn, you do so by adding the following code to your theme. 
+By default, the plugin loads each template using the core `get_template_part` function, which supports passing data to the template. However if you want to use this plugin with the [Extended Template Parts library](https://github.com/johnbillion/extended-template-parts) by John Blackbourn, you do so by adding the following code to your theme. 
 
 ```
 add_filter( 'kalutara_use_extended_template_parts', '__return_true' );
