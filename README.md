@@ -125,6 +125,14 @@ function box {
 }
 ```
 
+## Using extended template parts. 
+
+By default, the plugin loads each template using the core `get_template_part` function, which supports passing data to the template. However if you want to use this plugin with the [Extended Template Parts libaray](https://github.com/johnbillion/extended-template-parts) by John Blackbourn, you do so by adding the following code to your theme. 
+
+```
+add_filter( 'kalutara_use_extended_template_parts', '__return_true' );
+```
+
 ## Limitations
 
 One limitation of the pattern library is that it relies on data being passed to the template, and cannot use global data e.g. `the_title`. However this is very common practice in WordPress development, and I'd probably advise against changing the way you do things completely to comply with the pattern library too much. Often it's best to just use the pattern library for smaller components.
