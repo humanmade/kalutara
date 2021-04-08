@@ -32,6 +32,7 @@ if ( $query_var !== 'all' ) {
 	$templates = array_unique( $templates );
 }
 
+$backstop_data = [];
 ?>
 
 <!doctype html>
